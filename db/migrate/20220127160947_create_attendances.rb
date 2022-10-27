@@ -5,6 +5,8 @@ class CreateAttendances < ActiveRecord::Migration[6.1]
       t.boolean :attended
 
       t.timestamps
+
+      t.belongs_to :student
     end
   end
 end
