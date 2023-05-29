@@ -10,26 +10,62 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_27_161100) do
+ActiveRecord::Schema.define(version: 2023_05_29_185852) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "active_admin_comments", force: :cascade do |t|
-    t.string "namespace"
-    t.text "body"
-    t.string "resource_type"
-    t.bigint "resource_id"
-    t.string "author_type"
-    t.bigint "author_id"
+  create_table "application_configs", force: :cascade do |t|
+    t.string "key"
+    t.string "value"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["author_type", "author_id"], name: "index_active_admin_comments_on_author"
-    t.index ["namespace"], name: "index_active_admin_comments_on_namespace"
-    t.index ["resource_type", "resource_id"], name: "index_active_admin_comments_on_resource"
   end
 
-  create_table "admin_users", force: :cascade do |t|
+  create_table "courses", force: :cascade do |t|
+    t.string "name"
+    t.bigint "department_id", null: false
+    t.string "type"
+    t.integer "credit"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["department_id"], name: "index_courses_on_department_id"
+  end
+
+  create_table "departments", force: :cascade do |t|
+    t.bigint "faculty_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["faculty_id"], name: "index_departments_on_faculty_id"
+  end
+
+  create_table "faculties", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "lecturers", force: :cascade do |t|
+    t.string "name"
+    t.string "nik"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "students", force: :cascade do |t|
+    t.string "name"
+    t.string "nim"
+    t.bigint "department_id", null: false
+    t.integer "entry_year"
+    t.string "status"
+    t.bigint "supervisor_lecturer_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["department_id"], name: "index_students_on_department_id"
+    t.index ["supervisor_lecturer_id"], name: "index_students_on_supervisor_lecturer_id"
+  end
+
+  create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
@@ -37,31 +73,12 @@ ActiveRecord::Schema.define(version: 2022_01_27_161100) do
     t.datetime "remember_created_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["email"], name: "index_admin_users_on_email", unique: true
-    t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  create_table "attendances", force: :cascade do |t|
-    t.integer "week_number"
-    t.boolean "attended"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.bigint "student_id"
-    t.index ["student_id"], name: "index_attendances_on_student_id"
-  end
-
-  create_table "grades", force: :cascade do |t|
-    t.boolean "graduated"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.bigint "student_id"
-    t.index ["student_id"], name: "index_grades_on_student_id"
-  end
-
-  create_table "students", force: :cascade do |t|
-    t.string "name"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
+  add_foreign_key "courses", "departments"
+  add_foreign_key "departments", "faculties"
+  add_foreign_key "students", "departments"
+  add_foreign_key "students", "lecturers", column: "supervisor_lecturer_id"
 end

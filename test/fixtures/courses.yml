@@ -2,14 +2,14 @@
 
 one:
   name: MyString
-  nim: MyString
   department: one
-  entry_year: 1
-  status: MyString
+  type: 
+  department: one
+  credit: 1
 
 two:
   name: MyString
-  nim: MyString
   department: two
-  entry_year: 1
-  status: MyString
+  type: 
+  department: two
+  credit: 1
