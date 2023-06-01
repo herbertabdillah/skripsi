@@ -1,5 +1,5 @@
 ActiveAdmin.register Student do
-  menu parent: 'Users'
+  menu parent: 'Manage Users'
   permit_params :name, :nim, :department_id, :entry_year, :status, :supervisor_lecturer_id
 
   form do |f|

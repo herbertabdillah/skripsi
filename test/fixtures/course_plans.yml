@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  year: 1
+  semester: 1
+  student: one
+  is_approved: false
+
+two:
+  year: 1
+  semester: 1
+  student: two
+  is_approved: false

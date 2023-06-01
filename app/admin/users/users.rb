@@ -1,5 +1,5 @@
 ActiveAdmin.register User do
-  menu parent: 'Users'
+  menu parent: 'Manage Users'
   permit_params :email, :password, :password_confirmation
 
   index do

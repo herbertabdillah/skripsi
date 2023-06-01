@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  course_result: one
+  course_plan_course_semester: one
+  score: 9.99
+
+two:
+  course_result: two
+  course_plan_course_semester: two
+  score: 9.99
