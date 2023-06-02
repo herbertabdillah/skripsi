@@ -1,4 +1,5 @@
 ActiveAdmin.register CourseResult do
+  menu if: proc{ current_user.student? }
 
   # See permitted parameters documentation:
   # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters

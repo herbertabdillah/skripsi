@@ -12,6 +12,13 @@ ActiveAdmin.register CoursePlan do
   end
 
   show do |course_plan|
+
+    if current_user.lecturer?
+      div class: 'action_item' do
+        button_to 'Approve Plan', approve_admin_course_plan_path(id: course_plan.id), method: :post
+      end
+    end
+
     attributes_table do
       row :year
       row :semester
@@ -38,6 +45,11 @@ ActiveAdmin.register CoursePlan do
         end
       end
     end
+  end
+
+  member_action :approve, method: :post do
+    CoursePlanService.new(resource).submit
+    redirect_to admin_course_plan_path
   end
 
   controller do
