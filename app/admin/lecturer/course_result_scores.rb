@@ -1,5 +1,5 @@
 ActiveAdmin.register CourseResultScore do
-  # belongs_to :lecturer_course, parent_class: CourseSemester
+  belongs_to :lecturer_course, parent_class: CourseSemester
 
   # See permitted parameters documentation:
   # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters

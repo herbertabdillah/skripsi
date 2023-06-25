@@ -91,7 +91,7 @@ module FabricSync
 
     def update_course_result(course_result_score)
       course_semester_id = course_result_score.course_semester.id
-      @contract.update_course_result(course_semester_id, course_result_score.course_plan_id, course_result_score.score)
+      @contract.update_course_result(course_semester_id, course_result_score.course_result.course_plan_id, course_result_score.score)
     end
 
     def get_course_result(id)

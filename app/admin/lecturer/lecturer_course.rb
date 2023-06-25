@@ -21,7 +21,7 @@ ActiveAdmin.register CourseSemester, as: 'Lecturer Course' do
         column(:no) { counter += 1 }
         column(:name) { |c| c.student.name }
         column(:score) { |c| c.score }
-        column :actions do |c|
+        column(:actions) do |c|
           link_to "Edit", edit_admin_lecturer_course_course_result_score_path(lecturer_course_id: c.course_semester.id, id: c.id)
         end
       end
