@@ -1,3 +1,11 @@
+GIT
+  remote: https://github.com/herbertabdillah/fabric-gateway-ruby
+  revision: c7377aaf2e62de1e2ac309965a09b5c7c72a2c7e
+  specs:
+    fabric-gateway (0.5.0)
+      google-protobuf (>= 3.19.1)
+      grpc (~> 1.42)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -100,19 +108,16 @@ GEM
       responders
       warden (~> 1.2.3)
     erubi (1.12.0)
-    fabric-gateway (0.5.0)
-      google-protobuf (>= 3.19.1)
-      grpc (~> 1.42)
     ffi (1.15.5)
     formtastic (4.0.0)
       actionpack (>= 5.2.0)
     formtastic_i18n (0.7.0)
     globalid (1.1.0)
       activesupport (>= 5.0)
-    google-protobuf (3.23.2-x86_64-linux)
+    google-protobuf (3.23.3-x86_64-linux)
     googleapis-common-protos-types (1.6.0)
       google-protobuf (~> 3.14)
-    grpc (1.55.0-x86_64-linux)
+    grpc (1.56.0-x86_64-linux)
       google-protobuf (~> 3.23)
       googleapis-common-protos-types (~> 1.0)
     has_scope (0.8.1)
@@ -298,7 +303,7 @@ DEPENDENCIES
   byebug
   capybara (>= 3.26)
   devise
-  fabric-gateway
+  fabric-gateway!
   jbuilder (~> 2.7)
   listen (~> 3.3)
   pg

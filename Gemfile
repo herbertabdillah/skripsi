@@ -32,7 +32,7 @@ gem 'pg'
 gem 'activeadmin'
 gem 'devise'
 
-gem 'fabric-gateway'
+gem 'fabric-gateway', git: 'https://github.com/herbertabdillah/fabric-gateway-ruby'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

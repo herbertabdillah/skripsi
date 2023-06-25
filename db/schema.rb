@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_06_02_022753) do
+ActiveRecord::Schema.define(version: 2023_06_25_044755) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -18,6 +18,15 @@ ActiveRecord::Schema.define(version: 2023_06_02_022753) do
   create_table "application_configs", force: :cascade do |t|
     t.string "key"
     t.string "value"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "blockchain_syncs", force: :cascade do |t|
+    t.string "syncable_type"
+    t.integer "syncable_id"
+    t.string "status"
+    t.string "description"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -68,6 +77,14 @@ ActiveRecord::Schema.define(version: 2023_06_02_022753) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["course_id"], name: "index_course_semesters_on_course_id"
     t.index ["lecturer_id"], name: "index_course_semesters_on_lecturer_id"
+  end
+
+  create_table "course_years", force: :cascade do |t|
+    t.integer "year"
+    t.string "semester"
+    t.string "status"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "courses", force: :cascade do |t|

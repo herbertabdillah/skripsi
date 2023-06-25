@@ -2,7 +2,7 @@ require 'fabric'
 module FabricConnection
   class Contract
     def self.load_certs
-      data_dir ='/home/herbertabdillah/workspaces/go/src/github.com/hyperledger/fabric-samples/test-network/organizations' # aka test-network/organizations
+      data_dir ='/home/herbertabdillah/workspaces/skripsi/fabric-samples/test-network/organizations' # aka test-network/organizations
       files = [
           # 'peerOrganizations/org1.example.com/ca/ca.org1.example.com-cert.pem',
           'peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt',
@@ -32,15 +32,18 @@ module FabricConnection
       client=Fabric::Client.new(host: 'localhost:7051', creds: creds, **client_opts)
       # client=Fabric::Client.new(host: 'localhost:7051', creds: creds, default_call_options: default_call_options, **client_opts)
 
+      # tmp_key = OpenSSL::PKey::EC.new(load_certs[1])
+
       identity = Fabric::Identity.new(
         msp_id: 'Org1MSP',
         private_key: Fabric::crypto_suite.key_from_pem(load_certs[1]),
+        # private_key: tmp_key,
         certificate: load_certs[2]
       )
 
       gateway = identity.new_gateway(client)
       # network = gateway.new_network('mainchannel')
-      gateway.new_network('mainchannel')
+      gateway.new_network('uinjkt')
     end
 
     def self.main
