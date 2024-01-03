@@ -47,6 +47,7 @@ module FabricSync
     end
 
     def insert_student(student)
+      # binding.pry
       @contract.insert_student(student.id, student.name, student.nim, student.department_id, student.entry_year,
                               student.status, student.supervisor_lecturer_id)
     end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_06_25_044755) do
+ActiveRecord::Schema.define(version: 2024_01_03_032905) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,6 +22,14 @@ ActiveRecord::Schema.define(version: 2023_06_25_044755) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "blockchain_sync_batches", force: :cascade do |t|
+    t.string "status"
+    t.string "description"
+    t.string "sync_result"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "blockchain_syncs", force: :cascade do |t|
     t.string "syncable_type"
     t.integer "syncable_id"
@@ -29,6 +37,8 @@ ActiveRecord::Schema.define(version: 2023_06_25_044755) do
     t.string "description"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "blockchain_sync_batch_id"
+    t.index ["blockchain_sync_batch_id"], name: "index_blockchain_syncs_on_blockchain_sync_batch_id"
   end
 
   create_table "course_plan_course_semesters", force: :cascade do |t|
@@ -154,6 +164,17 @@ ActiveRecord::Schema.define(version: 2023_06_25_044755) do
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["userable_type", "userable_id"], name: "index_users_on_userable"
+  end
+
+  create_table "versions", force: :cascade do |t|
+    t.string "item_type", null: false
+    t.bigint "item_id", null: false
+    t.string "event", null: false
+    t.string "whodunnit"
+    t.json "object"
+    t.json "object_changes"
+    t.datetime "created_at"
+    t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
   end
 
   add_foreign_key "course_plan_course_semesters", "course_plans"

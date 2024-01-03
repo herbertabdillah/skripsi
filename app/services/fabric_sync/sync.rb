@@ -1,7 +1,8 @@
 module FabricSync
   class Sync
-    def initialize
+    def initialize(blockchain_sync_batch)
       @adapter = FabricSync::Adapter.new
+      @blockchain_sync_batch = blockchain_sync_batch
     end
 
     # All, for cron job
@@ -73,6 +74,7 @@ module FabricSync
     end
 
     def student(start_date: nil, ids: nil)
+      # binding.pry
       sync(Student, start_date: start_date, ids: ids) { |student| @adapter.insert_student(student) }
     end
 
@@ -113,9 +115,11 @@ module FabricSync
 
       data.each do |obj|
         block.call obj
-        BlockchainSync.create status: "success", syncable: obj
+        # binding.pry
+        BlockchainSync.create status: "success", syncable: obj, blockchain_sync_batch: @blockchain_sync_batch
       rescue StandardError => e
-        BlockchainSync.create status: "error", syncable: obj, description: e.message
+        # binding.pry
+        BlockchainSync.create status: "error", syncable: obj, description: e.message, blockchain_sync_batch: @blockchain_sync_batch
       end
     end
   end

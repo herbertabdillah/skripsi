@@ -1,7 +1,7 @@
-class ApplicationRecord < ActiveRecord::Base
-  has_paper_trail
+class PaperTrail::Version < ActiveRecord::Base
+  include PaperTrail::VersionConcern
 
-  self.abstract_class = true
+# #   self.abstract_class = true
   def self.ransackable_associations(auth_object = nil)
     @ransackable_associations ||= reflect_on_all_associations.map { |a| a.name.to_s }
   end
@@ -10,3 +10,4 @@ class ApplicationRecord < ActiveRecord::Base
     @ransackable_attributes ||= column_names + _ransackers.keys + _ransack_aliases.keys + attribute_aliases.keys
   end
 end
+PaperTrail.serializer = PaperTrail::Serializers::JSON

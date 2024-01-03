@@ -179,6 +179,9 @@ GEM
     nokogiri (1.15.5-x86_64-linux)
       racc (~> 1.4)
     orm_adapter (0.5.0)
+    paper_trail (15.1.0)
+      activerecord (>= 6.1)
+      request_store (~> 1.4)
     pg (1.5.4)
     pry (0.13.1)
       coderay (~> 1.1)
@@ -233,6 +236,8 @@ GEM
     rb-inotify (0.10.1)
       ffi (~> 1.0)
     regexp_parser (2.8.3)
+    request_store (1.5.1)
+      rack (>= 1.4)
     responders (3.1.1)
       actionpack (>= 5.2)
       railties (>= 5.2)
@@ -307,6 +312,7 @@ DEPENDENCIES
   fabric-gateway!
   jbuilder (~> 2.7)
   listen (~> 3.3)
+  paper_trail
   pg
   pry (~> 0.13.1)
   puma (~> 5.0)

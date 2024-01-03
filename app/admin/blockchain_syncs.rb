@@ -1,18 +1,11 @@
 ActiveAdmin.register BlockchainSync do
-
-  # See permitted parameters documentation:
-  # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
-  #
-  # Uncomment all parameters which should be permitted for assignment
-  #
+  menu label: 'Batch Item', parent: 'blockchain_sync_batches', if: proc{ current_user.is_admin? }
+  # belongs_to :blockchain_sync_batch
   permit_params :syncable_type, :syncable_id, :status, :description
-  #
-  # or
-  #
-  # permit_params do
-  #   permitted = [:syncable_type, :syncable_id, :status, :description]
-  #   permitted << :other if params[:action] == 'create' && current_user.admin?
-  #   permitted
-  # end
-  
+  filter :syncable_type
+  filter :syncable_id
+  filter :status, as: :select, collection: BlockchainSync.statuses
+  filter :description
+  filter :created_at
+
 end

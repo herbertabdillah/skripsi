@@ -33,6 +33,7 @@ gem 'activeadmin'
 gem 'devise'
 
 gem 'fabric-gateway', git: 'https://github.com/herbertabdillah/fabric-gateway-ruby'
+gem 'paper_trail'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
