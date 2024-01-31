@@ -5,4 +5,6 @@ class CoursePlan < ApplicationRecord
   has_one :course_result
 
   accepts_nested_attributes_for :course_plan_course_semesters, :allow_destroy => true
+
+
 end
