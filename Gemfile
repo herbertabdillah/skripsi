@@ -64,3 +64,6 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem "pundit", "~> 2.3"
+gem "faker"
+
+gem "sidekiq", "~> 7.2"

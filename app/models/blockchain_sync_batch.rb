@@ -1,7 +1,7 @@
 class BlockchainSyncBatch < ApplicationRecord
 	enum status: { created: 'created', running: 'running', success: 'success', failed: 'failed' }
   after_initialize :default_values
-  after_create :sync_job
+  after_commit :sync_job
   has_many :blockchain_syncs
 
   private
@@ -11,6 +11,6 @@ class BlockchainSyncBatch < ApplicationRecord
   end
 
   def sync_job
-    SyncJob.perform_later(id)
+    SyncJob.perform_async(id)
   end
 end
