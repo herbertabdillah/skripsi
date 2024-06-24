@@ -1,0 +1,14 @@
+@startuml
+actor       Admin       as adm
+participant System      as sys
+participant Blockchain  as hlf
+
+adm -> sys: test
+activate sys
+sys -> sys: asdf
+sys -> hlf: sdfdf
+hlf --> sys
+sys --> adm
+deactivate sys
+
+@enduml

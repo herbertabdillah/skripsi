@@ -1,0 +1,34 @@
+@startuml
+left to right direction
+actor "Admin" as admin
+actor "Dosen" as dosen
+actor "Mahasiswa" as mhs
+actor "Orang umum" as anon
+
+rectangle Administrasi {
+    usecase "Input master data" as master
+    usecase "Setup tahun ajaran" as ta
+}
+
+rectangle Perkuliahan {
+    usecase "Mengajukan KRS" as ajuiKrs
+    usecase "Menyetujui KRS" as setujuiKrs
+    usecase "Memberi nilai" as nilai
+}
+
+rectangle Kelulusan {
+    usecase "Cek Data Mahasiswa" as cekMahasiswa
+    usecase "Meluluskan mahasiswa" as lulus
+}
+
+admin --> master
+admin --> ta
+
+mhs --> ajuiKrs
+
+dosen --> setujuiKrs
+dosen --> nilai
+dosen --> lulus
+
+anon --> cekMahasiswa
+@enduml

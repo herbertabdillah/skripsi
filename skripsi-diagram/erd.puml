@@ -1,0 +1,164 @@
+@startuml
+hide circle
+skinparam linetype ortho
+
+entity "**application_configs**" {
+  + ""id"": //bigserial [PK]//
+  --
+  ""key"": //character varying //
+  ""value"": //character varying //
+  *""created_at"": //timestamp//
+  *""updated_at"": //timestamp(6)//
+}
+
+entity "**course_plan_course_semesters**" {
+  + ""id"": //bigserial [PK]//
+  --
+  *""course_plan_id"": //bigint [FK]//
+  *""course_semester_id"": //bigint [FK]//
+  *""created_at"": //timestamp//
+  *""updated_at"": //timestamp(6)//
+}
+
+entity "**course_plans**" {
+  + ""id"": //bigserial [PK]//
+  --
+  ""year"": //integer //
+  ""semester"": //integer //
+  *""student_id"": //bigint [FK]//
+  ""is_approved"": //boolean //
+  *""created_at"": //timestamp//
+  *""updated_at"": //timestamp(6)//
+}
+
+entity "**course_result_scores**" {
+  + ""id"": //bigserial [PK]//
+  --
+  *""course_result_id"": //bigint [FK]//
+  *""course_plan_course_semester_id"": //bigint [FK]//
+  ""score"": //numeric //
+  *""created_at"": //timestamp//
+  *""updated_at"": //timestamp(6)//
+}
+
+entity "**course_results**" {
+  + ""id"": //bigserial [PK]//
+  --
+  *""course_plan_id"": //bigint [FK]//
+  ""score"": //numeric //
+  *""created_at"": //timestamp//
+  *""updated_at"": //timestamp(6)//
+}
+
+entity "**course_semesters**" {
+  + ""id"": //bigserial [PK]//
+  --
+  ""year"": //integer //
+  ""semester"": //integer //
+  *""course_id"": //bigint [FK]//
+  *""lecturer_id"": //bigint [FK]//
+  *""created_at"": //timestamp//
+  *""updated_at"": //timestamp(6)//
+}
+
+entity "**courses**" {
+  + ""id"": //bigserial [PK]//
+  --
+  ""name"": //character varying //
+  *""department_id"": //bigint [FK]//
+  ""credit"": //integer //
+  *""created_at"": //timestamp//
+  *""updated_at"": //timestamp(6)//
+  ""kind"": //character varying //
+}
+
+entity "**departments**" {
+  + ""id"": //bigserial [PK]//
+  --
+  *""faculty_id"": //bigint [FK]//
+  *""created_at"": //timestamp//
+  *""updated_at"": //timestamp(6)//
+  ""name"": //character varying //
+}
+
+entity "**faculties**" {
+  + ""id"": //bigserial [PK]//
+  --
+  ""name"": //character varying //
+  *""created_at"": //timestamp//
+  *""updated_at"": //timestamp(6)//
+}
+
+entity "**graduates**" {
+  + ""id"": //bigserial [PK]//
+  --
+  *""student_id"": //bigint [FK]//
+  ""score"": //numeric //
+  ""year"": //integer //
+  *""created_at"": //timestamp//
+  *""updated_at"": //timestamp(6)//
+}
+
+entity "**lecturers**" {
+  + ""id"": //bigserial [PK]//
+  --
+  ""name"": //character varying //
+  ""nik"": //character varying //
+  *""created_at"": //timestamp//
+  *""updated_at"": //timestamp(6)//
+}
+
+entity "**students**" {
+  + ""id"": //bigserial [PK]//
+  --
+  ""name"": //character varying //
+  ""nim"": //character varying //
+  *""department_id"": //bigint [FK]//
+  ""entry_year"": //integer //
+  ""status"": //character varying //
+  ""supervisor_lecturer_id"": //bigint [FK]//
+  *""created_at"": //timestamp//
+  *""updated_at"": //timestamp(6)//
+}
+
+entity "**users**" {
+  + ""id"": //bigserial [PK]//
+  --
+  *""email"": //character varying //
+  *""encrypted_password"": //character varying //
+  ""reset_password_token"": //character varying //
+  ""reset_password_sent_at"": //timestamp//
+  ""remember_created_at"": //timestamp//
+  *""created_at"": //timestamp//
+  *""updated_at"": //timestamp(6)//
+  ""userable_type"": //character varying //
+  ""userable_id"": //bigint //
+  ""is_admin"": //boolean //
+}
+
+"**course_plan_course_semesters**"   }--  "**course_plans**"
+
+"**course_plan_course_semesters**"   }--  "**course_semesters**"
+
+"**course_plans**"   }--  "**students**"
+
+"**course_result_scores**"   }--  "**course_results**"
+
+"**course_result_scores**"   }--  "**course_plan_course_semesters**"
+
+"**course_results**"   }--  "**course_plans**"
+
+"**course_semesters**"   }--  "**courses**"
+
+"**course_semesters**"   }--  "**lecturers**"
+
+"**courses**"   }--  "**departments**"
+
+"**departments**"   }--  "**faculties**"
+
+"**graduates**"   }--  "**students**"
+
+"**students**"   }--  "**lecturers**"
+
+"**students**"   }--  "**departments**"
+@enduml
