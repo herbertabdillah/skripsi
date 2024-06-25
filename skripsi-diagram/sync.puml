@@ -1,14 +1,57 @@
 @startuml
+actor       Pengguna       as user
 actor       Admin       as adm
 participant System      as sys
-participant Blockchain  as hlf
+database Database      as db
+participant Blockchain_Contract  as hlf
+database Blockchain_State      as hld
 
-adm -> sys: test
+user -> sys: Menggunakan aplikasi
 activate sys
-sys -> sys: asdf
-sys -> hlf: sdfdf
-hlf --> sys
-sys --> adm
+sys -> db: membaca dan mengubah isi tabel
 deactivate sys
+
+adm -> sys: sinkronisasi data
+activate sys
+sys -> db: membuat ""blockchain_syncs""
+
+group contoh sinkronisasi satu entitas
+
+sys -> sys: sinkronisasi fakultas
+activate sys
+sys -> db: mencari perubahan baru tabel ""faculties"" sejak tanggal terkahir ""blockchain_syncs""
+sys -> hlf: memanggil ""MasterData:insertFaculty(id, nama)""
+activate hlf
+hlf -> hld: menulis state ""Faculty""
+deactivate hlf
+sys -> db: membuat ""blockhain_sync_items""
+deactivate sys
+
+end
+group entitas lainnya (sama seperti diatas)
+sys -> sys: program_studi
+sys -> sys: mata_kuliah
+sys -> sys: dosen
+sys -> sys: mahasiswa
+sys -> sys: sinkronisasi tahun_ajaran
+sys -> sys: krs
+sys -> sys: khs
+sys -> sys: kelulusan
+end
+
+sys -> db: mengupdate ""blockchain_syncs""
+
+deactivate sys
+
+adm -> sys: mengecek hasil sinkronisasi
+activate sys
+sys -> db: membaca ""blockchain_syncs""
+sys -> db: membaca ""blockchain_sync_items""
+alt terdapat data yang tidak sesuai
+adm -> adm: melakukan verifikasi dan rekonsiliasi manual
+end
+
+deactivate sys
+
 
 @enduml

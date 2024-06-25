@@ -333,3 +333,33 @@ ActiveAdmin.setup do |config|
   #
   # config.use_webpacker = true
 end
+
+class ActiveAdmin::Devise::SessionsController < ::Devise::SessionsController
+  include ::ActiveAdmin::Devise::Controller
+  prepend_before_action :require_no_authentication, only: [:create]
+
+
+  # GET /resource/sign_in
+  def new
+    if params['email'].present?
+      self.resource = User.find_by_email(params['email'])
+      @user = self.resource
+      respond_with @user do |format|
+        set_flash_message!(:notice, :signed_in)
+        sign_in(resource_name, resource)
+        format.html { redirect_to "/admin" }         
+        format.json { render :status => :ok }
+      end
+
+      yield resource if block_given?
+    else
+      self.resource = resource_class.new(sign_in_params)
+      clean_up_passwords(resource)
+      yield resource if block_given?
+      respond_with(resource, serialize_options(resource))
+    end
+  end
+
+
+  ActiveSupport.run_load_hooks(:active_admin_controller, self)
+end

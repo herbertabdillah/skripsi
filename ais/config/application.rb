@@ -18,5 +18,7 @@ module Ais
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+    config.hosts << "ais.h-1.localhost"
+    config.hosts << "ais.h-1.cloud"
   end
 end

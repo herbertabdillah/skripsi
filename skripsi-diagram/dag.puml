@@ -1,0 +1,22 @@
+@startuml
+digraph foo {
+'   tahun_ajaran [label="perkuliahan"]
+    ' tahun_ajaran
+    ' master_data
+    ' mahasiswa
+    ' dosen
+    ' perkuliahan 
+    ' krs
+    ' khs
+    ' kelulusan
+
+
+    fakultas -> program_studi -> mata_kuliah
+    mata_kuliah -> perkuliahan
+    dosen -> perkuliahan
+    tahun_ajaran -> perkuliahan
+    krs -> khs -> kelulusan
+    perkuliahan -> krs
+    mahasiswa -> krs
+}
+@enduml
