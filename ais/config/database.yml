@@ -18,7 +18,8 @@ development:
   pool: 5
   username: postgres
   password: postgres
-  host: 0.0.0.0
+  # host: 0.0.0.0
+  host: <%= ENV.fetch("DB_HOST") { "0.0.0.0" } %>
   port: 5432
 
 # Warning: The database defined as "test" will be erased and
@@ -27,7 +28,25 @@ development:
 test:
   <<: *default
   database: db/test.sqlite3
+  # adapter: postgresql
+  # encoding: unicode
+  # database: ais
+  # pool: 5
+  # username: postgres
+  # password: postgres
+  # # host: 0.0.0.0
+  # host: <%= ENV.fetch("DB_HOST") { "0.0.0.0" } %>
+  # port: 5432
 
 production:
-  <<: *default
-  database: db/production.sqlite3
+  # <<: *default
+  # database: db/production.sqlite3
+  adapter: postgresql
+  encoding: unicode
+  database: ais
+  pool: 5
+  username: postgres
+  password: postgres
+  # host: 0.0.0.0
+  host: <%= ENV.fetch("DB_HOST") { "0.0.0.0" } %>
+  port: 5432

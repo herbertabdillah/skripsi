@@ -12,9 +12,6 @@
 
 ActiveRecord::Schema.define(version: 2024_01_03_032905) do
 
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
-
   create_table "application_configs", force: :cascade do |t|
     t.string "key"
     t.string "value"
@@ -42,8 +39,8 @@ ActiveRecord::Schema.define(version: 2024_01_03_032905) do
   end
 
   create_table "course_plan_course_semesters", force: :cascade do |t|
-    t.bigint "course_plan_id", null: false
-    t.bigint "course_semester_id", null: false
+    t.integer "course_plan_id", null: false
+    t.integer "course_semester_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["course_plan_id"], name: "index_course_plan_course_semesters_on_course_plan_id"
@@ -53,7 +50,7 @@ ActiveRecord::Schema.define(version: 2024_01_03_032905) do
   create_table "course_plans", force: :cascade do |t|
     t.integer "year"
     t.integer "semester"
-    t.bigint "student_id", null: false
+    t.integer "student_id", null: false
     t.boolean "is_approved"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -61,8 +58,8 @@ ActiveRecord::Schema.define(version: 2024_01_03_032905) do
   end
 
   create_table "course_result_scores", force: :cascade do |t|
-    t.bigint "course_result_id", null: false
-    t.bigint "course_plan_course_semester_id", null: false
+    t.integer "course_result_id", null: false
+    t.integer "course_plan_course_semester_id", null: false
     t.decimal "score"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -71,7 +68,7 @@ ActiveRecord::Schema.define(version: 2024_01_03_032905) do
   end
 
   create_table "course_results", force: :cascade do |t|
-    t.bigint "course_plan_id", null: false
+    t.integer "course_plan_id", null: false
     t.decimal "score"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -81,8 +78,8 @@ ActiveRecord::Schema.define(version: 2024_01_03_032905) do
   create_table "course_semesters", force: :cascade do |t|
     t.integer "year"
     t.integer "semester"
-    t.bigint "course_id", null: false
-    t.bigint "lecturer_id", null: false
+    t.integer "course_id", null: false
+    t.integer "lecturer_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["course_id"], name: "index_course_semesters_on_course_id"
@@ -99,7 +96,7 @@ ActiveRecord::Schema.define(version: 2024_01_03_032905) do
 
   create_table "courses", force: :cascade do |t|
     t.string "name"
-    t.bigint "department_id", null: false
+    t.integer "department_id", null: false
     t.integer "credit"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -108,7 +105,7 @@ ActiveRecord::Schema.define(version: 2024_01_03_032905) do
   end
 
   create_table "departments", force: :cascade do |t|
-    t.bigint "faculty_id", null: false
+    t.integer "faculty_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "name"
@@ -122,7 +119,7 @@ ActiveRecord::Schema.define(version: 2024_01_03_032905) do
   end
 
   create_table "graduates", force: :cascade do |t|
-    t.bigint "student_id", null: false
+    t.integer "student_id", null: false
     t.decimal "score"
     t.integer "year"
     t.datetime "created_at", precision: 6, null: false
@@ -140,10 +137,10 @@ ActiveRecord::Schema.define(version: 2024_01_03_032905) do
   create_table "students", force: :cascade do |t|
     t.string "name"
     t.string "nim"
-    t.bigint "department_id", null: false
+    t.integer "department_id", null: false
     t.integer "entry_year"
     t.string "status"
-    t.bigint "supervisor_lecturer_id"
+    t.integer "supervisor_lecturer_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["department_id"], name: "index_students_on_department_id"

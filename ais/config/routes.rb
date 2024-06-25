@@ -24,4 +24,8 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
   get "/dikti", to: "dikti#index"
   resources :students#, only: [:index]
+
+  namespace :api do
+    resources :course_plans, only: [:show]
+  end
 end

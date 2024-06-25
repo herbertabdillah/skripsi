@@ -20,5 +20,6 @@ module Ais
     # config.eager_load_paths << Rails.root.join("extras")
     config.hosts << "ais.h-1.localhost"
     config.hosts << "ais.h-1.cloud"
+    config.hosts << "localhost"
   end
 end
