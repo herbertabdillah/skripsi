@@ -10,12 +10,37 @@ services:
       WEB_CONCURRENCY: 8
       RAILS_ENV: production
       DB_HOST: postgres
+      REDIS_URL: redis://redis:6379
+      PEER_HOST: host.docker.internal:7051
     ports:
       - "3000:3000"
     volumes:
       - .:/app
+      - ../fabric-samples:/fabric-samples
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     depends_on:
       - postgres
+
+  worker:
+    build:
+      context: .
+      # dockerfile: app.Dockerfile
+    command: bash -c "bundle exec sidekiq"
+    environment:
+      WEB_CONCURRENCY: 8
+      RAILS_ENV: production
+      DB_HOST: postgres
+      REDIS_URL: redis://redis:6379
+      PEER_HOST: host.docker.internal:7051
+    volumes:
+      - .:/app
+      - ../fabric-samples:/fabric-samples
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      - postgres
+      - redis
 
   postgres:
     container_name: postgres_container
@@ -26,7 +51,7 @@ services:
       POSTGRES_DB: ais
       PGDATA: /data/postgres
     volumes:
-       - postgres:/data/postgres
+      - postgres:/data/postgres
     ports:
       - "5432:5432"
     # networks:

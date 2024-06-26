@@ -67,3 +67,7 @@ gem "pundit", "~> 2.3"
 gem "faker"
 
 gem "sidekiq", "~> 7.2"
+
+gem "rspec", "~> 3.13"
+
+gem "rspec-rails", "~> 6.1"

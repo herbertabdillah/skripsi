@@ -34,7 +34,7 @@ ActiveRecord::Schema.define(version: 2024_01_03_032905) do
     t.string "description"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.bigint "blockchain_sync_batch_id"
+    t.integer "blockchain_sync_batch_id"
     t.index ["blockchain_sync_batch_id"], name: "index_blockchain_syncs_on_blockchain_sync_batch_id"
   end
 
@@ -97,18 +97,18 @@ ActiveRecord::Schema.define(version: 2024_01_03_032905) do
   create_table "courses", force: :cascade do |t|
     t.string "name"
     t.integer "department_id", null: false
+    t.string "kind"
     t.integer "credit"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "kind"
     t.index ["department_id"], name: "index_courses_on_department_id"
   end
 
   create_table "departments", force: :cascade do |t|
+    t.string "name"
     t.integer "faculty_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "name"
     t.index ["faculty_id"], name: "index_departments_on_faculty_id"
   end
 
@@ -156,7 +156,7 @@ ActiveRecord::Schema.define(version: 2024_01_03_032905) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "userable_type"
-    t.bigint "userable_id"
+    t.integer "userable_id"
     t.boolean "is_admin"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

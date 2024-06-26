@@ -10,7 +10,11 @@ class SyncJob
     last_bs = BlockchainSync.last
     bsb = BlockchainSyncBatch.find(id)
     s = FabricSync::Sync.new(bsb)
-    s.run start_date: last_bs.created_at
+    if last_bs.blank?
+      s.run start_date: 1.year.ago
+    else
+      s.run start_date: last_bs.created_at
+    end
     
     bsb.status = :success
     bsb.save

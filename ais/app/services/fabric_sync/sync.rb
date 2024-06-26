@@ -8,6 +8,7 @@ module FabricSync
     # All, for cron job
 
     def run(start_date:)
+      start_end_year start_date: start_date
       group_master_data start_date: start_date
       group_user start_date: start_date
       group_administration start_date: start_date
@@ -41,18 +42,40 @@ module FabricSync
       graduate start_date: start_date
     end
 
-    def start_end_year(year, semester)
-      @adapter.start_year(year, semester)
-      @adapter.end_year(year, semester)
+    def start_end_year(start_date: nil)
+      course_year start_date: start_date
     end
 
-    def start_year(year, semester)
-      @adapter.start_year(year, semester)
-      @adapter.end_year(year, semester)
-    end
+    # def start_year(year, semester)
+    #   @adapter.start_year(year, semester)
+    #   @adapter.end_year(year, semester)
+    # end
 
     # Manual - each
+    def convert_semester(semester)
+      new_semester = "odd"
+      if semester == 2
+        new_semester = "even"
+      end
 
+      new_semester
+    end
+
+    def course_year(start_date: nil, ids: nil)
+      sync(CourseYear, start_date: start_date) do |course_year|
+        year = course_year.year
+        semester = convert_semester(course_year.semester)
+
+        before = CourseYear.last(2).first
+        if before.id != course_year.id
+          @adapter.end_year(before.year, convert_semester(before.semester))
+        end
+
+        @adapter.start_year(year, semester)
+      end
+    end
+
+    
     # master_data
 
     def faculty(start_date: nil, ids: nil)

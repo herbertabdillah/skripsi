@@ -10,17 +10,17 @@ default: &default
   timeout: 5000
 
 development:
-  # <<: *default
-  # database: db/development.sqlite3
-  adapter: postgresql
-  encoding: unicode
-  database: ais
-  pool: 5
-  username: postgres
-  password: postgres
-  # host: 0.0.0.0
-  host: <%= ENV.fetch("DB_HOST") { "0.0.0.0" } %>
-  port: 5432
+  <<: *default
+  database: db/development.sqlite3
+  # adapter: postgresql
+  # encoding: unicode
+  # database: ais
+  # pool: 5
+  # username: postgres
+  # password: postgres
+  # # host: 0.0.0.0
+  # host: <%= ENV.fetch("DB_HOST") { "0.0.0.0" } %>
+  # port: 5432
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".

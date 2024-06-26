@@ -2,14 +2,16 @@ require 'fabric'
 module FabricConnection
   class Contract
     def self.load_certs
-      data_dir ='/home/herbertabdillah/workspaces/skripsi/fabric-samples/test-network/organizations' # aka test-network/organizations
+      Rails.root.join('app', 'assets', 'images', 'logo.png')
+
+      data_dir ='../fabric-samples/test-network/organizations' # aka test-network/organizations
       files = [
           # 'peerOrganizations/org1.example.com/ca/ca.org1.example.com-cert.pem',
           'peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt',
           'peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/keystore/priv_sk',
           'peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/signcerts/Admin@org1.example.com-cert.pem'
         ]
-      files.map { |f| File.open(File.join(data_dir, f)).read }
+      files.map { |f| File.open(Rails.root.join(data_dir, f)).read }
     end
 
     def self.get_network
@@ -29,7 +31,8 @@ module FabricConnection
       }
       creds = GRPC::Core::ChannelCredentials.new(load_certs[0])
       # client=Fabric::Client.new(host: 'localhost:7051', creds: creds)
-      client=Fabric::Client.new(host: 'localhost:7051', creds: creds, **client_opts)
+      peer_host =  ENV.fetch("PEER_HOST") { "localhost:7051" }
+      client=Fabric::Client.new(host: peer_host, creds: creds, **client_opts)
       # client=Fabric::Client.new(host: 'localhost:7051', creds: creds, default_call_options: default_call_options, **client_opts)
 
       # tmp_key = OpenSSL::PKey::EC.new(load_certs[1])

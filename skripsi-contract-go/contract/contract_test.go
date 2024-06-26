@@ -124,11 +124,12 @@ func startYear2017(chaincode *testcc.MockStub) {
 	expectcc.ResponseOk(chaincode.Invoke("Administration:endYear", 2017, "even"))
 	expectcc.ResponseOk(chaincode.Invoke("Administration:startYear", 2017, "odd"))
 
-	queryResponse := chaincode.Query("Administration:getCourseYear", 2017, "even")
+	// queryResponse := chaincode.Query("Administration:getCourseYear", 2017, "even")
+	queryResponse := chaincode.Query("Administration:getCurrentCourseYear")
 	courseYear := expectcc.PayloadIs(queryResponse, &state.CourseYear{}).(state.CourseYear)
 	Expect(courseYear.Year).To(Equal(2017))
-	Expect(courseYear.Semester).To(Equal("even"))
-	Expect(courseYear.Status).To(Equal("end"))
+	Expect(courseYear.Semester).To(Equal("odd"))
+	Expect(courseYear.Status).To(Equal("start"))
 }
 
 func courseSemester(chaincode *testcc.MockStub) {

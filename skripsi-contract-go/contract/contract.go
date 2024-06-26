@@ -45,6 +45,7 @@ func NewCC() *router.Chaincode {
 		Invoke(`Administration:startYear`, StartYear, param.Int("year"), param.String("semester")).
 		Invoke(`Administration:endYear`, EndYear, param.Int("year"), param.String("semester")).
 		Query(`Administration:getCourseYear`, GetCourseYear, param.Int("year"), param.String("semester")).
+		Query(`Administration:getCurrentCourseYear`, GetCurrentCourseYear).
 		Invoke(`Administration:insertCourseSemester`, InsertCourseSemester, param.String("id"), param.Int("year"), param.String("semester"), param.String("courseId"), param.String("lecturerId")).
 		Query(`Administration:getCourseSemester`, GetCourseSemester, param.String("id")).
 		// Course

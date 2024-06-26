@@ -19,6 +19,16 @@ func (r Repository) GetCourseYear(year int, semester string) (*state.CourseYear,
 
 	return &obj, nil
 }
+
+func (r Repository) GetCurrentCourseYear() (*state.CourseYear, error) {
+	appConfig, err := r.GetApplicationConfig()
+	if err != nil {
+		return nil, err
+	}
+
+	return r.GetCourseYear(appConfig.Year, appConfig.Semester)
+}
+
 func (r Repository) GetCourseSemester(id string) (*state.CourseSemester, error) {
 	res, err := r.context.State().Get("CourseSemester."+id, &state.CourseSemester{})
 	if err != nil {
@@ -70,4 +80,17 @@ func (r Repository) InsertCourseYear(obj *state.CourseYear) (*state.CourseYear, 
 	}
 
 	return obj, nil
+}
+
+func (r Repository) SetCurrentCourseYear(year int, semester string) (*state.CourseYear, error) {
+	courseYear := &state.CourseYear{Year: year, Semester: semester, Status: ""}
+	key := "GlobalState.CourseSemester"
+
+	err := r.context.State().Put(key, courseYear)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return courseYear, nil
 }

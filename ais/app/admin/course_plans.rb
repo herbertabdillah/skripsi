@@ -56,7 +56,9 @@ ActiveAdmin.register CoursePlan do
 
   controller do
     def scoped_collection
-      if current_user.lecturer?
+      if current_user.is_admin?
+        super
+      elsif current_user.lecturer?
         super.includes(:student).where(student: {supervisor_lecturer: current_user.userable})
       elsif current_user.student? 
         super.where(student: current_user.userable)

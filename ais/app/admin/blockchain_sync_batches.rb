@@ -1,5 +1,5 @@
 ActiveAdmin.register BlockchainSyncBatch do
-  menu label: 'PDDIKTI Sync', if: proc{ current_user.is_admin? }
+  menu label: 'Blockchain Sync', if: proc{ current_user.is_admin? }
 
   # See permitted parameters documentation:
   # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters

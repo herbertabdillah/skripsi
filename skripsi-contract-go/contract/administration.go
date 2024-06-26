@@ -11,19 +11,22 @@ func StartYear(c router.Context) (interface{}, error) {
 
 	appConfig, err := cc.Repository.GetApplicationConfig()
 	if err != nil {
-		return nil, err
-	}
+		appConfig = &state.ApplicationConfig{Semester: semester, Year: year}
+		cc.Repository.InsertApplicationConfig(appConfig)
+		// return nil, err
+	} else {
+		appConfig.Semester = semester
+		appConfig.Year = year
 
-	appConfig.Semester = semester
-	appConfig.Year = year
+		_, err = cc.Repository.UpdateApplicationConfig(appConfig)
 
-	_, err = cc.Repository.UpdateApplicationConfig(appConfig)
-
-	if err != nil {
-		return nil, err
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	courseYear := &state.CourseYear{Year: year, Semester: semester, Status: "start"}
+	cc.Repository.SetCurrentCourseYear(year, semester)
 
 	return cc.Repository.InsertCourseYear(courseYear)
 }
@@ -55,6 +58,12 @@ func GetCourseYear(c router.Context) (interface{}, error) {
 	year, semester := c.ParamInt("year"), c.ParamString("semester")
 
 	return cc.Repository.GetCourseYear(year, semester)
+}
+
+func GetCurrentCourseYear(c router.Context) (interface{}, error) {
+	cc := NewContext(c)
+
+	return cc.Repository.GetCurrentCourseYear()
 }
 
 func InsertCourseSemester(c router.Context) (interface{}, error) {
