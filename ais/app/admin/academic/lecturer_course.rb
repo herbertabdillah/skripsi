@@ -1,5 +1,5 @@
 ActiveAdmin.register CourseSemester, as: 'Lecturer Course' do
-  menu if: proc{ current_user.lecturer? }
+  menu parent: 'Academic', if: proc{ current_user.lecturer? }
   permit_params :year, :semester, :course_id, :lecturer_id
 
   show do |course_semester|
@@ -30,6 +30,8 @@ ActiveAdmin.register CourseSemester, as: 'Lecturer Course' do
 
   controller do
     def scoped_collection
+      return super if current_user.is_admin?
+
       super.where(lecturer: current_user.userable)
     end
   end

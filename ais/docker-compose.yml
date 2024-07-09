@@ -5,10 +5,11 @@ services:
     build:
       context: .
       # dockerfile: app.Dockerfile
-    # command: bash -c "bundle exec puma -C config/puma.rb"
+    command: bash -c "bundle exec puma -C config/puma.rb"
     environment:
       WEB_CONCURRENCY: 8
-      RAILS_ENV: production
+      RAILS_ENV: development
+      # RAILS_ENV: production
       DB_HOST: postgres
       REDIS_URL: redis://redis:6379
       PEER_HOST: host.docker.internal:7051

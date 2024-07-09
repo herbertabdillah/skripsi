@@ -53,7 +53,7 @@ class Factory
 
     master_course_per_semester = Factory.get_master_course_per_semester(department)
 
-    cpcs = []
+    # cpcs = []
     course_semesters = master_course_per_semester[semester].map do |course|
         CourseSemester.create!(year: current_year, semester: semester, course: course, lecturer: lecturers.sample())
     end
@@ -64,10 +64,14 @@ class Factory
         end
         CoursePlanService.new(course_plan).submit
     end
-    cpcs.each do |cpcs|
+    students.each do |student|
+      course_plan = CoursePlan.where(year: current_year, semester: semester, student: student)
+      cpcs = CoursePlanCourseSemester.where(course_plan: course_plan)
+      cpcs.each do |cpcs|
         crs = CourseResultScore.find_by_course_plan_course_semester_id(cpcs.id)
         crs.score = rand(3..4)
         crs.save
+      end
     end
   end
 end

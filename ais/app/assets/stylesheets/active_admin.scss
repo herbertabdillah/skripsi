@@ -8,15 +8,52 @@
 // $sidebar-width: 242px;
 
 // Active Admin's got SASS!
-// @import "active_admin/mixins";
-// @import "active_admin/base";
-@import "active_material/src/stylesheets/active_material.scss";
+@import "active_admin/mixins";
+@import "active_admin/base";
+$skinMainFirstColor: #02574e!default;
+$skinMainSecondColor: #009688!default;
+// $skinBorderWindowColor: #B8BABE!default;
+
+
+$skinMainFirstColor: #b33939!default;
+$skinMainSecondColor: #ff5252!default;
+
+@import 'wigu/active_admin_theme';
+
+// #active_admin_content { display: flex; flex-direction: column }
+// #active_admin_content #sidebar { order: -1; margin: 0 -.5rem; display: flex; width: auto; }
+// #active_admin_content #sidebar > div { width: auto; margin: 0 .5rem; flex: 1 1 100%;}
+// #active_admin_content #sidebar > div:first-child { flex:  0 0 auto }
+// #active_admin_content #main_content_wrapper #main_content { margin: 0 }
+// .table_tools { margin: 1rem 0; }
+body.index.active_admin {
+  #wrapper {
+    display: block;
+  }
+  .index_content {
+    .index_as_table {
+      width: 100%;
+      overflow-x: auto;
+
+      table.index_table.index {
+        th {
+          white-space: nowrap;
+        }
+        td {
+          white-space: nowrap;
+        }
+      }
+    }
+  }
+}
+
+// @import "active_material/src/stylesheets/active_material.scss";
 
 // Overriding any non-variable Sass must be done after the fact.
 // For example, to change the default status-tag color:
 //
 //   .status_tag { background: #6090DB; }
-#utility_nav {
-    background: url(/profile.svg) no-repeat!important;
-    background-size: 40px!important;
-}
+// #utility_nav {
+//     background: url(/profile.svg) no-repeat!important;
+//     background-size: 40px!important;
+// }

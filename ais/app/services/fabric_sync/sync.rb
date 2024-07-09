@@ -137,12 +137,19 @@ module FabricSync
       end
 
       data.each do |obj|
-        block.call obj
-        # binding.pry
-        BlockchainSync.create status: "success", syncable: obj, blockchain_sync_batch: @blockchain_sync_batch
-      rescue StandardError => e
-        # binding.pry
-        BlockchainSync.create status: "error", syncable: obj, description: e.message, blockchain_sync_batch: @blockchain_sync_batch
+        response = block.call obj
+        transaction_id = response[:transaction_id]
+        result = response[:result]
+        call_description = "#{response[:contract_name]} #{response[:param]}"
+        if response[:success]
+          BlockchainSync.create status: "success", syncable: obj, description: "#{transaction_id} #{call_description}", blockchain_sync_batch: @blockchain_sync_batch
+        else
+          err_description = "#{response[:error]} tx_id: #{transaction_id} call: #{call_description}"
+          BlockchainSync.create status: "error", syncable: obj, description: err_description, blockchain_sync_batch: @blockchain_sync_batch
+        end
+      # rescue StandardError => e
+        # err_description = "#{e.message} #{description}"
+        # BlockchainSync.create status: "error", syncable: obj, description: err_description, blockchain_sync_batch: @blockchain_sync_batch
       end
     end
   end

@@ -1,5 +1,5 @@
 ActiveAdmin.register Graduate do
-  menu if: proc{ current_user.lecturer_or_admin? }
+  menu parent: 'Academic', if: proc{ current_user.lecturer_or_admin? }
 
   # See permitted parameters documentation:
   # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters

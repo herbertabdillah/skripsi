@@ -9,18 +9,21 @@ class TranscriptService
 
   def cumulative_score
     query = <<-SQL
-      select sum(score) from (select max(crs.score) score
-      from course_result_scores crs
-      inner join course_results cr on cr.id=crs.course_result_id
-      inner join course_plans cp on cp.id = cr.course_plan_id
-      inner join course_plan_course_semesters cpcs on cpcs.id = crs.course_plan_course_semester_id
-      inner join course_semesters cs on cs.id = cpcs.course_semester_id
-      where cp.student_id = #{@student.id}
-      group by cs.course_id) score    
+      select sum(score) as sum, sum(credit) as credit from (
+        select max(crs.score) * max(c.credit) score, max(c.credit) as credit
+        from course_result_scores crs
+        inner join course_results cr on cr.id=crs.course_result_id
+        inner join course_plans cp on cp.id = cr.course_plan_id
+        inner join course_plan_course_semesters cpcs on cpcs.id = crs.course_plan_course_semester_id
+        inner join course_semesters cs on cs.id = cpcs.course_semester_id
+        inner join courses c on c.id = cs.course_id
+        where cp.student_id = #{@student.id}
+        group by cs.course_id
+      ) score    
     SQL
     scores = ActiveRecord::Base.connection.execute query
 
-    scores.first["sum"]
+    scores.first["sum"] / scores.first["credit"]
   end
 
   def taken_course_ids

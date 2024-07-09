@@ -1,5 +1,5 @@
 ActiveAdmin.register Student do
-  menu parent: 'Manage Users'
+  menu parent: 'Manage Users', if: proc{ current_user.is_admin? }
   permit_params :name, :nim, :department_id, :entry_year, :status, :supervisor_lecturer_id, :email
 
   form do |f|

@@ -1,5 +1,5 @@
 ActiveAdmin.register Student, as: 'Lecturer Student' do
-  menu if: proc{ current_user.lecturer? }
+  menu parent: 'Manage Users', if: proc{ current_user.lecturer? }
   permit_params :name, :nim, :department_id, :entry_year, :status, :supervisor_lecturer_id
 
   form do |f|
@@ -16,6 +16,8 @@ ActiveAdmin.register Student, as: 'Lecturer Student' do
 
   controller do
     def scoped_collection
+      return super if current_user.is_admin?
+
       super.where(supervisor_lecturer: current_user.userable)
     end
   end

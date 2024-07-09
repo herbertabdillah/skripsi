@@ -1,4 +1,5 @@
 ActiveAdmin.register CoursePlan do
+  menu parent: 'Academic'
   permit_params :year, :semester, :student_id, :is_approved
 
   form do |f|

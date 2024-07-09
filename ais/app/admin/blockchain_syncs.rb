@@ -8,4 +8,17 @@ ActiveAdmin.register BlockchainSync do
   filter :description
   filter :created_at
 
+  index do
+    column :id
+    column :syncable
+    # column :syncable_type
+    column :status
+    column :description do |x|
+      x.description&.truncate(80)
+    end
+    column :updated_at
+    column :blockchain_sync_batch
+    actions
+  end
+
 end

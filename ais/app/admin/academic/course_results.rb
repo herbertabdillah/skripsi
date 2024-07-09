@@ -1,5 +1,5 @@
 ActiveAdmin.register CourseResult do
-  menu if: proc{ current_user.student? }
+  menu parent: 'Academic'#, if: proc{ current_user.student? }
 
   # See permitted parameters documentation:
   # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
@@ -15,6 +15,14 @@ ActiveAdmin.register CourseResult do
   #   permitted << :other if params[:action] == 'create' && current_user.admin?
   #   permitted
   # end
+  index do
+    column :id
+    column(:student) { |c| c.course_plan.student }
+    column :course_plan
+    column :updated_at
+    actions
+  end
+
   show do |course_result|
     attributes_table do
       row :score
@@ -45,4 +53,18 @@ ActiveAdmin.register CourseResult do
       end
     end
   end 
+
+  controller do
+    def scoped_collection
+      if current_user.is_admin?
+        super
+      elsif current_user.lecturer?
+        super.includes(course_plan: :student).where(course_plan: {students: {supervisor_lecturer: current_user.userable}})
+      elsif current_user.student? 
+        super.includes(course_plan: :student).where(course_plan: {student: current_user.userable})
+      else
+        super
+      end
+    end
+  end
 end

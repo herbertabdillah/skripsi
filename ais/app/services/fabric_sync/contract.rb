@@ -121,11 +121,26 @@ module FabricSync
     private
 
     def submit(contract_name, param)
+
       submit_error = nil
       evaluate_error = nil
 
-      res = begin
-        @contract.submit_transaction contract_name, param
+      proposal = @contract.new_proposal(contract_name, arguments: param)
+      tx_id = proposal.transaction_id
+
+      res = {
+        contract_name: contract_name,
+        param: param,
+        success: true,
+        error: nil,
+        transaction_id: tx_id,
+        result: nil,
+      }
+
+      begin
+        # @contract.submit_transaction contract_name, param
+        # contract_submit_with_tx_id(contract_name, param)
+        res[:result] = submit_proposal(proposal)
       rescue StandardError => e
         submit_error = e
       end
@@ -139,10 +154,30 @@ module FabricSync
       end
 
       if evaluate_error
-        raise StandardError, evaluate_error.to_rpc_status.message
+        # raise StandardError, evaluate_error.to_rpc_status.message
+        res[:success] = false
+        res[:error] = evaluate_error.to_rpc_status.message
       else
-        raise submit_error
+        # raise submit_error
+        res[:success] = false
+        res[:error] = submit_error
       end
+
+      return res
+    end
+
+    def submit_proposal(proposal)
+      endorsed_proposal = proposal.endorse
+      submitted_transaction = endorsed_proposal.submit
+
+      return submitted_transaction.result
+
+      # {
+      #   success: true,
+      #   error: nil,
+      #   transaction_id: proposal.transaction_id,
+      #   result: submitted_transaction.result
+      # }
     end
 
     def deserialize(raw)

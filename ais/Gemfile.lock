@@ -47,6 +47,7 @@ GEM
       erubi (~> 1.4)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.1, >= 1.2.0)
+    active_admin_theme (1.1.4)
     activeadmin (3.2.0)
       arbre (~> 1.2, >= 1.2.1)
       formtastic (>= 3.1)
@@ -187,9 +188,11 @@ GEM
       activerecord (>= 6.1)
       request_store (~> 1.4)
     pg (1.5.4)
-    pry (0.13.1)
+    pry (0.14.2)
       coderay (~> 1.1)
       method_source (~> 1.0)
+    pry-rails (0.3.11)
+      pry (>= 0.13.0)
     public_suffix (5.0.4)
     puma (5.6.7)
       nio4r (~> 2.0)
@@ -336,6 +339,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  active_admin_theme
   activeadmin
   bootsnap (>= 1.4.4)
   byebug
@@ -347,11 +351,12 @@ DEPENDENCIES
   listen (~> 3.3)
   paper_trail
   pg
-  pry (~> 0.13.1)
+  pry-rails
   puma (~> 5.0)
   pundit (~> 2.3)
   rack-mini-profiler (~> 2.0)
   rails (~> 6.1.4, >= 6.1.4.1)
+  railties (~> 6.1)
   rspec (~> 3.13)
   rspec-rails (~> 6.1)
   sass-rails (>= 6)

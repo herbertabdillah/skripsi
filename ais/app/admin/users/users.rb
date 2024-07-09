@@ -1,5 +1,5 @@
 ActiveAdmin.register User do
-  menu parent: 'Manage Users'
+  menu parent: 'Manage Users', if: proc{ current_user.is_admin? }
   permit_params :email, :password, :password_confirmation
 
   index do

@@ -9,7 +9,7 @@ class User < ApplicationRecord
   end
 
   def lecturer?
-    userable.is_a? Lecturer
+    userable.is_a?(Lecturer) && !is_admin?
   end
 
   def lecturer_or_admin?
