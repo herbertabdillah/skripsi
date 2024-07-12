@@ -74,4 +74,29 @@ class Factory
       end
     end
   end
+
+  def self.fill_semester_plan(students, semester, start_year, department, lecturers)
+    current_year = start_year + (semester / 2)
+    current_semester = semester % 2
+    if current_semester == 0
+      current_semester = 2
+    end
+    ApplicationConfig.find_by_key("year").update_attribute("value", current_year)
+    ApplicationConfig.find_by_key("semester").update_attribute("value", current_semester)
+    CourseYear.create(year: current_year, semester: current_semester)
+
+    master_course_per_semester = Factory.get_master_course_per_semester(department)
+
+    # cpcs = []
+    course_semesters = master_course_per_semester[semester].map do |course|
+        CourseSemester.create!(year: current_year, semester: semester, course: course, lecturer: lecturers.sample())
+    end
+    students.each do |student|
+        course_plan = CoursePlan.create!(year: current_year, semester: semester, student: student, is_approved: false)
+        cpcs = course_semesters.map do |course_semester|
+            CoursePlanCourseSemester.create!(course_plan: course_plan, course_semester: course_semester)
+        end
+        CoursePlanService.new(course_plan).submit
+    end
+  end
 end

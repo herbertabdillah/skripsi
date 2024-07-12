@@ -48,6 +48,7 @@ ActiveRecord::Base.transaction do
 
     (1..1).each do |semester|
         Factory.fill_semester(students, semester, start_year, department, lecturers)
+        # Factory.fill_semester_plan(Student.all, 2, 2017, Department.first, Lecturer.all)
         # current_year = start_year + (semester / 2)
         # ApplicationConfig.find_by_key("year").update_attribute("value", current_year)
         # ApplicationConfig.find_by_key("semester").update_attribute("value", current_semester)
