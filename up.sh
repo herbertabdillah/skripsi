@@ -9,8 +9,5 @@ docker volume rm explorer_pgdata || true
 docker volume rm explorer_walletstore || true
 docker compose up -d
 
-cd ${ROOT_PATH}/skripsi-nginx
-docker compose up -d
-
 cd ${ROOT_PATH}/ais
 docker compose up -d
