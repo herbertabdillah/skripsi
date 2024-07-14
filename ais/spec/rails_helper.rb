@@ -98,15 +98,15 @@ RSpec.configure do |config|
     driven_by(:remote_chrome)
   end
 
-  config.before(:each) do
+  config.before(:suite) do
     DatabaseCleaner.strategy = :truncation
   end
 
-  config.before(:each) do
+  config.before(:suite) do
     DatabaseCleaner.start
   end
 
-  config.after(:each) do
+  config.after(:suite) do
     DatabaseCleaner.clean
   end
 
