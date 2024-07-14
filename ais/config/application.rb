@@ -24,6 +24,7 @@ module Ais
     config.hosts << "localhost"
     config.hosts << "127.0.0.1"
     config.hosts << "skripsi.h-1.cloud"
+    config.hosts << "app"
     config.action_dispatch.ip_spoofing_check = false
   end
 end

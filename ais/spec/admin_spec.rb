@@ -8,16 +8,16 @@ RSpec.describe 'Hello world', type: :system do
     current_semester = 1
 
 
-    Factory.create_admin
+    # Factory.create_admin
 
-    faculty = Faculty.create!(name: "Sains dan Teknologi")
-    department = Department.create!(name: "Teknik Informatika", faculty: faculty)
+    # faculty = Faculty.create!(name: "Sains dan Teknologi")
+    # department = Department.create!(name: "Teknik Informatika", faculty: faculty)
   end
 
   describe 'index page' do
     it 'shows the right content' do
       visit "/admin/login?email=admin@uinjkt.ac.id"
-      expect(page).to have_content('Ais')
+      expect(page).to have_content('Skripsi')
     end
   end
 end

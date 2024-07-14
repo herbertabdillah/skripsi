@@ -1,12 +1,42 @@
 # This file is copied to spec/ when you run 'rails generate rspec:install'
+require 'database_cleaner'
+
 require 'pry'
 require 'spec_helper'
-ENV['RAILS_ENV'] ||= 'test'
+ENV['RAILS_ENV'] = 'test'
+ENV['REDIS_URL'] = 'redis://redis_test:6379'
 require_relative '../config/environment'
 # Prevent database truncation if the environment is production
 abort("The Rails environment is running in production mode!") if Rails.env.production?
 require 'rspec/rails'
 # Add additional requires below this line. Rails is not loaded until this point!
+
+
+require 'capybara/rspec'
+require 'selenium-webdriver'
+# Add options for the Chrome browser
+chrome_options = Selenium::WebDriver::Chrome::Options.new
+
+# Disable notifications
+chrome_options.add_argument("--disable-notifications")
+
+
+
+Capybara.register_driver :remote_chrome do |app|
+  Capybara::Selenium::Driver.new(app,
+  :browser => :remote,
+  # :browser_name => :chrome,
+  :url => "http://chrome-server:4444/wd/hub",
+  :options => chrome_options)
+end
+
+# Capybara.configure do |config|
+#   config.run_server = false
+#   config.default_driver = :remote_chrome
+#   config.app_host = 'http://www.google.com' # change this to point to your application
+# end
+
+
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
@@ -25,11 +55,11 @@ require 'rspec/rails'
 
 # Checks for pending migrations and applies them before tests are run.
 # If you are not using ActiveRecord, you can remove these lines.
-begin
-  ActiveRecord::Migration.maintain_test_schema!
-rescue ActiveRecord::PendingMigrationError => e
-  abort e.to_s.strip
-end
+# begin
+#   ActiveRecord::Migration.maintain_test_schema!
+# rescue ActiveRecord::PendingMigrationError => e
+#   abort e.to_s.strip
+# end
 RSpec.configure do |config|
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = Rails.root.join('spec/fixtures')
@@ -37,7 +67,7 @@ RSpec.configure do |config|
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
   # instead of true.
-  config.use_transactional_fixtures = true
+  config.use_transactional_fixtures = false
 
   # You can uncomment this line to turn off ActiveRecord support entirely.
   # config.use_active_record = false
@@ -61,4 +91,61 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
+  config.before(:each, type: :system) do
+    Capybara.server_host = '0.0.0.0'
+    Capybara.server_port = 4000
+    Capybara.app_host = "http://app:3000"
+    driven_by(:remote_chrome)
+  end
+
+  config.before(:each) do
+    DatabaseCleaner.strategy = :truncation
+  end
+
+  config.before(:each) do
+    DatabaseCleaner.start
+
+    ActiveRecord::Base.transaction do
+        Rails.logger.info("start")
+        start_year = 2017
+        current_year = start_year
+        current_semester = 1
+        university_domain = "uinjkt.ac.id"
+
+        Factory.create_admin
+
+        faculty = Faculty.create!(name: "Sains dan Teknologi")
+        department = Department.create!(name: "Teknik Informatika", faculty: faculty)
+
+        lecturers = (1..1).map do
+            Factory.create_lecturer("lecturer a")
+            Factory.create_lecturer("lecturer b")
+            Factory.create_lecturer(Faker::Name.name)
+            Factory.create_lecturer(Faker::Name.name)
+            Factory.create_lecturer(Faker::Name.name)
+        end
+        students = [
+            Factory.create_student("student a", 2017, "active", department, lecturers.sample),
+            Factory.create_student("student b", 2017, "active", department, lecturers.sample),
+            Factory.create_student("mahasiswa abadi", 2017, "active", department, lecturers.sample),
+            Factory.create_student(Faker::Name.name, 2017, "active", department, lecturers.sample),
+            Factory.create_student(Faker::Name.name, 2017, "active", department, lecturers.sample),
+            Factory.create_student(Faker::Name.name, 2017, "active", department, lecturers.sample),
+        ]
+
+        Rails.logger.info("master done")
+        Factory.insert_master_course_per_semester(department)
+
+        # (1..1).each do |semester|
+        #     Factory.fill_semester(students, semester, start_year, department, lecturers)
+        # end
+    end
+  end
+
+  config.after(:each) do
+    DatabaseCleaner.clean
+  end
+
+
 end
+

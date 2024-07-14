@@ -48,6 +48,29 @@ services:
       - postgres
       - redis
 
+  worker_test:
+    build:
+      context: .
+      # dockerfile: app.Dockerfile
+    command: bash -c "bundle exec sidekiq"
+    environment:
+      WEB_CONCURRENCY: 8
+      DB_HOST: postgres
+      REDIS_URL: redis://redis_test:6379
+      PEER_HOST: host.docker.internal:7051
+      RAILS_ENV: test
+      APP_HOST: ${APP_HOST}
+      EXPLORER_HOST: ${EXPLORER_HOST}
+      PGADMIN_HOST: ${PGADMIN_HOST}
+    volumes:
+      - .:/app
+      - ../fabric-samples:/fabric-samples
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      - postgres
+      - redis
+
   postgres:
     container_name: postgres_container
     image: postgres
@@ -86,6 +109,13 @@ services:
     ports:
       - "6379:6379"
 
+  redis_test:
+    image: "redis:alpine"    
+
+  chrome-server:
+    image: selenium/standalone-chrome:96.0
+    ports:
+      - "7900:7900"
 # networks:
 #   postgres:
 #     driver: bridge
