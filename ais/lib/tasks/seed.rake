@@ -1,3 +1,4 @@
+require 'factory'
 namespace :seed do
   desc "TODO"
 
