@@ -52,23 +52,23 @@ module FabricSync
     # end
 
     # Manual - each
-    def convert_semester(semester)
-      new_semester = "odd"
-      if semester == 2
-        new_semester = "even"
-      end
+    # def convert_semester(semester)
+    #   new_semester = "odd"
+    #   if semester == 2
+    #     new_semester = "even"
+    #   end
 
-      new_semester
-    end
+    #   new_semester
+    # end
 
     def course_year(start_date: nil, ids: nil)
       sync(CourseYear, start_date: start_date) do |course_year|
         year = course_year.year
-        semester = convert_semester(course_year.semester)
+        semester = course_year.semester
 
         before = CourseYear.last(2).first
         if before.id != course_year.id
-          @adapter.end_year(before.year, convert_semester(before.semester))
+          @adapter.end_year(before.year, before.semester)
         end
 
         @adapter.start_year(year, semester)

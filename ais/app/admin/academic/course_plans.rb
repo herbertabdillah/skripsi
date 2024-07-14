@@ -4,8 +4,8 @@ ActiveAdmin.register CoursePlan do
 
   form do |f|
     f.inputs "Course Plan" do
-      f.input :year, :input_html => { value: ApplicationConfig.get('year') }
-      f.input :semester, :input_html => { value: ApplicationConfig.get('semester') }
+      f.input :year, :input_html => { value: CourseYear.active.year }
+      f.input :semester, :input_html => { value: CourseYear.active.semester_int }
       if current_user.lecturer_or_admin?
         f.input :student, :input_html => { disabled: true }
         f.input :is_approved

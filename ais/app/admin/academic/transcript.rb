@@ -26,7 +26,9 @@ ActiveAdmin.register Student, as: 'Transcript' do
 
   show do |course_result|
     attributes_table do
-      row(:score) { TranscriptService.new(resource).cumulative_score.round(2) }
+      transcript_result = TranscriptService.new(resource)
+      row(:score) { transcript_result.cumulative_score.round(2) }
+      row(:total_credit) { transcript_result.total_credit }
       # row(:semester) { |c| c.course_plan.semester }
       # row(:year) { |c| c.course_plan.year }
     end
@@ -41,6 +43,13 @@ ActiveAdmin.register Student, as: 'Transcript' do
     cr.each do |c|
       panel 'Course Taken' do
         counter = 0
+        attributes_table do
+          transcript_result = c.get_transcript
+          row(:score) { transcript_result[:score].round(2) }
+          row(:total_credit) { transcript_result[:total_credit] }
+          row(:semester) { |student| student.relative_semester(c.course_plan.year, c.course_plan.semester) }
+          row(:year) { c.course_plan.year }
+        end
 
         table_for c.course_result_scores do
           column(:no) { counter += 1 }

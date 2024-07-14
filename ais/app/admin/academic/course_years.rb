@@ -15,5 +15,12 @@ ActiveAdmin.register CourseYear do
   #   permitted << :other if params[:action] == 'create' && current_user.admin?
   #   permitted
   # end
-  
+  form do |f|
+    f.inputs do
+      f.input :year
+      f.input :semester, as: :select, collection: CourseYear.semesters.keys
+      # f.input :status
+    end
+    f.actions
+  end
 end

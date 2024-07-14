@@ -1,6 +1,7 @@
 require 'sidekiq/web'
 
 Rails.application.routes.draw do
+  root to: 'home#index'
   mount Sidekiq::Web => "/sidekiq" 
   # devise_config = {
   #   :path=>:admin,
@@ -22,7 +23,10 @@ Rails.application.routes.draw do
 
   ActiveAdmin.routes(self)
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
-  get "/dikti", to: "dikti#index"
+  # get "/dikti", to: "dikti#index"
+  get "/blockchain_data_check", to: "blockchain_data_check#index"
+  get "/database", to: "database#index"
+  get "/explorer", to: "explorer#index"
   resources :students#, only: [:index]
 
   namespace :api do

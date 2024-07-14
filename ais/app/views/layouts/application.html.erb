@@ -6,11 +6,35 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_link_tag 'home', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
   <body>
+    <header id="header" class="menu-container">
+
+      <!--   Logo -->
+      <div class="logo-box">
+        <a href ="/">
+        Skripsi Herbert
+        </a>
+      </div>
+      <!--   Logo -->
+
+      <!--   navbar -->
+      <nav id="nav-bar">
+        <input class="menu-btn" type="checkbox" id="menu-btn" />
+        <label class="menu-icon" for="menu-btn"><span class="nav-icon"></span></label>
+        <ul class="menu">
+          <li><a href="/explorer" class="nav-link">Transaksi Blockchain</a></li>
+          <li><a href="/database">Database</a></li>
+          <li><a href="<%= "#{Rails.application.config_for(:host)[:app_host]}/blockchain_data_check" %>">Cek Data Mahasiswa Blockchain</a></li>
+          <a class="highlight" href="<%= "#{Rails.application.config_for(:host)[:app_host]}/admin" %>">Sistem Informasi Akademik</a>
+        </ul>
+      </nav>
+      <!--   navbar -->
+    </header>
+    <!-- header ends -->
     <%= yield %>
   </body>
 </html>

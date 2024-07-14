@@ -28,8 +28,8 @@ class Factory
 
     student
   end
-  
-  def self.get_master_course_per_semester(department)
+    
+  def self.insert_master_course_per_semester(department)
     master_course_per_semester = []
     (1..20).each { master_course_per_semester.push([]) }
     CSV.read("db/course_fixture.csv", headers: true).each do |r|
@@ -41,31 +41,42 @@ class Factory
     master_course_per_semester
   end
 
+  def self.get_master_course_per_semester(department)
+    master_course_per_semester = []
+    (1..20).each { master_course_per_semester.push([]) }
+    CSV.read("db/course_fixture.csv", headers: true).each do |r|
+        semester = r["semester"].to_i
+        c = Course.where(name: r["name"], department: department, kind: r["kind"], credit: r["credit"]).first
+        master_course_per_semester[semester].append(c)
+    end
+
+    master_course_per_semester
+  end
+
+  # Factory.fill_semester(Student.all, 2, 2017, Department.first, Lecturer.all)
   def self.fill_semester(students, semester, start_year, department, lecturers)
     current_year = start_year + (semester / 2)
     current_semester = semester % 2
     if current_semester == 0
       current_semester = 2
     end
-    ApplicationConfig.find_by_key("year").update_attribute("value", current_year)
-    ApplicationConfig.find_by_key("semester").update_attribute("value", current_semester)
-    CourseYear.create(year: current_year, semester: current_semester)
+    CourseYear.create_from_semester_int(year: current_year, semester: current_semester)
 
     master_course_per_semester = Factory.get_master_course_per_semester(department)
 
     # cpcs = []
     course_semesters = master_course_per_semester[semester].map do |course|
-        CourseSemester.create!(year: current_year, semester: semester, course: course, lecturer: lecturers.sample())
+        CourseSemester.create!(year: current_year, semester: current_semester, course: course, lecturer: lecturers.sample())
     end
     students.each do |student|
-        course_plan = CoursePlan.create!(year: current_year, semester: semester, student: student, is_approved: false)
+        course_plan = CoursePlan.create!(year: current_year, semester: current_semester, student: student, is_approved: false)
         cpcs = course_semesters.map do |course_semester|
             CoursePlanCourseSemester.create!(course_plan: course_plan, course_semester: course_semester)
         end
         CoursePlanService.new(course_plan).submit
     end
     students.each do |student|
-      course_plan = CoursePlan.where(year: current_year, semester: semester, student: student)
+      course_plan = CoursePlan.where(year: current_year, semester: current_semester, student: student)
       cpcs = CoursePlanCourseSemester.where(course_plan: course_plan)
       cpcs.each do |cpcs|
         crs = CourseResultScore.find_by_course_plan_course_semester_id(cpcs.id)
@@ -75,28 +86,47 @@ class Factory
     end
   end
 
+  # Factory.fill_semester_plan(Student.all, 2, 2017, Department.first, Lecturer.all)
   def self.fill_semester_plan(students, semester, start_year, department, lecturers)
     current_year = start_year + (semester / 2)
     current_semester = semester % 2
     if current_semester == 0
       current_semester = 2
     end
-    ApplicationConfig.find_by_key("year").update_attribute("value", current_year)
-    ApplicationConfig.find_by_key("semester").update_attribute("value", current_semester)
-    CourseYear.create(year: current_year, semester: current_semester)
+    CourseYear.create_from_semester_int(year: current_year, semester: current_semester)
 
     master_course_per_semester = Factory.get_master_course_per_semester(department)
 
     # cpcs = []
     course_semesters = master_course_per_semester[semester].map do |course|
-        CourseSemester.create!(year: current_year, semester: semester, course: course, lecturer: lecturers.sample())
+        CourseSemester.create!(year: current_year, semester: current_semester, course: course, lecturer: lecturers.sample())
     end
     students.each do |student|
-        course_plan = CoursePlan.create!(year: current_year, semester: semester, student: student, is_approved: false)
+        course_plan = CoursePlan.create!(year: current_year, semester: current_semester, student: student, is_approved: false)
         cpcs = course_semesters.map do |course_semester|
             CoursePlanCourseSemester.create!(course_plan: course_plan, course_semester: course_semester)
         end
         CoursePlanService.new(course_plan).submit
+    end
+  end
+
+  def self.fill_semester_and_sync(semester, start)
+    Factory.fill_semester(Student.all, semester, start, Department.first, Lecturer.all)
+    BlockchainSyncBatch.create(description: "#{CourseYear.active.year} #{CourseYear.active.semester}")
+  end
+
+  def self.fill_semester_and_sync_until(start_semester, until_semester)
+    (start_semester..until_semester).each do |semester|
+      Factory.fill_semester_and_sync(semester, 2017)
+      ready_to_go = false
+      while (!ready_to_go)
+        bsb = BlockchainSyncBatch.last
+        sleep(5)
+        Rails.logger.info("#{bsb.description} #{bsb.status}")
+        if bsb.success?
+          ready_to_go = true
+        end
+      end
     end
   end
 end

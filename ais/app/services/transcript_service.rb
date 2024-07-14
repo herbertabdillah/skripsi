@@ -1,13 +1,28 @@
 class TranscriptService
   def initialize(student)
     @student = student
+    @total_credit = 0
+    @taken_course_ids = []
+    @department_course_ids = []
+
+    process_transcript
   end
 
   def have_done_all_course?
-    taken_course_ids.sort == department_course_ids.sort
+    @taken_course_ids.sort == @department_course_ids.sort
+    # binding.pry
   end
 
   def cumulative_score
+    @cumulative_score
+  end
+
+  def total_credit
+    @total_credit
+  end
+
+  def process_transcript
+    @department_course_ids = Course.where(department: @student.department).pluck(:id)
     query = <<-SQL
       select sum(score) as sum, sum(credit) as credit from (
         select max(crs.score) * max(c.credit) score, max(c.credit) as credit
@@ -23,10 +38,9 @@ class TranscriptService
     SQL
     scores = ActiveRecord::Base.connection.execute query
 
-    scores.first["sum"] / scores.first["credit"]
-  end
+    @total_credit = scores.first["credit"]
+    @cumulative_score = scores.first["sum"] / scores.first["credit"]
 
-  def taken_course_ids
     query = <<-SQL
       select distinct cs.course_id
       from course_result_scores crs
@@ -39,10 +53,6 @@ class TranscriptService
     SQL
     ids = ActiveRecord::Base.connection.execute query
 
-    ids.pluck("course_id")
-  end
-
-  def department_course_ids
-    Course.where(department: @student.department).pluck(:id)
+    @taken_course_ids = ids.pluck("course_id")
   end
 end

@@ -113,7 +113,7 @@ module FabricSync
     end
 
     def get_transcript(id)
-      res = @contract.evaluate_transaction('Graduation.get_transcript', [id.to_s])
+      res = @contract.evaluate_transaction('Graduation:getTranscript', [id.to_s])
 
       JSON.parse(res)
     end   

@@ -7,7 +7,8 @@ ActiveAdmin.register CourseSemester, as: 'Choose Course' do
 
   def insert_course(course_semester_ids)
     cp = CoursePlan.find params[:course_plan_id]
-    existing_total_credit = CoursePlan.includes(course_plan_course_semesters: :course_semester).find(4).course_plan_course_semesters.map { |x| x.course_semester.course }.sum { |x| x.credit }
+    # existing_total_credit = CoursePlan.includes(course_plan_course_semesters: :course_semester).find(4).course_plan_course_semesters.map { |x| x.course_semester.course }.sum { |x| x.credit }
+    existing_total_credit = CoursePlan.includes(course_plan_course_semesters: :course_semester).find(params[:course_plan_id]).course_plan_course_semesters.map { |x| x.course_semester.course }.sum { |x| x.credit }
 
     course_semester_ids.map do |id|
       course = CourseSemester.find(id).course
@@ -48,8 +49,8 @@ ActiveAdmin.register CourseSemester, as: 'Choose Course' do
   controller do
     def scoped_collection
       super
-      current_course_year = CourseYear.where(year: ApplicationConfig.find_by_key('year').value.to_i, semester: ApplicationConfig.find_by_key('semester').value.to_i).first
-      CourseSemester.where(year: current_course_year.year, semester: current_course_year.semester).where.not(id: @course_plan.course_plan_course_semesters.pluck(:course_semester_id))
+      current_course_year = CourseYear.active
+      CourseSemester.where(year: current_course_year.year, semester: current_course_year.semester_int).where.not(id: @course_plan.course_plan_course_semesters.pluck(:course_semester_id))
     end
 
     def destroy

@@ -1,0 +1,114 @@
+<div id="main">
+
+<h1>Blockchain Data Check</h1>
+<%= form_with url: "/blockchain_data_check", method: :get do |form| %>
+  <table>
+    <tr>
+      <th><%= form.label :id, "Nomor Induk Mahasiswa:" %></th>
+      <td><%= form.text_field :id %></td>
+      <td><%= form.submit "Search" %></td>
+    </tr>
+  </table>
+<% end %>
+<% flash.each do |type, msg| %>
+  <div>
+    <%= msg %>
+  </div>
+<% end %>
+<% if @student.present? %>
+<h2>Data Mahasiswa</h2>
+<table>
+  <tr>
+    <th>Program Studi:</th>
+    <td>Teknik Informatika</td>
+  </tr>
+  <tr>
+    <th>NIM:</th>
+    <td><%= @student_b['nim'] %></td>
+  </tr>
+  <tr>
+    <th>Nama:</th>
+    <td><%= @student_b['name'] %></td>
+  </tr>
+  <tr>
+    <th>Tahun Masuk:</th>
+    <td><%= @student_b['entry_year'] %></td>
+  </tr>
+  <tr>
+    <th>Status:</th>
+    <td><%= @student_b['status'] %></td>
+  </tr>
+  <tr>
+    <th>Tahun Keluar:</th>
+    <td><%= @student_b['exit_year'] %></td>
+  </tr>
+  <tr>
+    <th>IPK</th>
+    <td><%= @transcript_b['score'].round(2) %></td>
+  </tr>
+</table>
+<h2>Data Perkuliahan</h2>
+<table>
+  <tr>
+    <th>Tahun</th>
+    <th>Semester</th>
+    <th>Mata Kuliah</th>
+    <th>Nilai</th>
+  </tr>
+<% @transcript_b['array'].each do |res| %>
+  <tr>
+    <td><%= res['year'] %></td>
+    <td><%= res['semester'] %></td>
+    <td><%= Course.find(res['course_id']).name %></td>
+    <td><%= res['score'] %></td>
+  </tr>
+<% end %>
+</table>
+<% end %>
+</div>
+<style>
+  html {
+    background-color: #f3f3f3;
+  }
+  body {
+    background-color: #f3f3f3;
+  }
+  #main {
+    background-color: #ffffff;
+    max-width: 700px;
+    padding: 30px;
+    border-radius: 16px;
+    margin: 20px auto;
+  }
+  table {
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 14px;
+    font-family: sans-serif;
+    min-width: 400px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+  }
+  thead tr {
+    background-color: #009879;
+    color: #ffffff;
+    text-align: left;
+  }
+  th, td {
+    padding: 12px 15px;
+  }
+  tbody tr {
+    border-bottom: 1px solid #dddddd;
+  }
+
+  tbody tr:nth-of-type(even) {
+      background-color: #f3f3f3;
+  }
+
+  tbody tr:last-of-type {
+      border-bottom: 2px solid #009879;
+  }
+  tbody tr.active-row {
+      font-weight: bold;
+      color: #009879;
+  }
+</style>
