@@ -60,7 +60,9 @@ RSpec.describe 'Integration' do
 
     describe 'blockchain sync' do
       it 'have no error' do
-        Rails.logger.info("====================== debug error: #{BlockchainSync.where(status: 'error')&.first}")
+        BlockchainSync.where(status: 'error')&.each do |bs|
+          Rails.logger.info("====================== debug error: #{bs.description}")
+        end
         expect(true).to eq true
       end
     end
