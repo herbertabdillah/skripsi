@@ -27,6 +27,7 @@ Rails.application.routes.draw do
   get "/blockchain_data_check", to: "blockchain_data_check#index"
   get "/database", to: "database#index"
   get "/explorer", to: "explorer#index"
+  get "/reset", to: "reset#index"
   resources :students#, only: [:index]
 
   namespace :api do
