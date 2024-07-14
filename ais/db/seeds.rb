@@ -22,10 +22,17 @@ ActiveRecord::Base.transaction do
 
     lecturers = (1..1).map do
         Factory.create_lecturer("lecturer a")
+        Factory.create_lecturer("lecturer b")
+        Factory.create_lecturer(Faker::Name.name)
+        Factory.create_lecturer(Faker::Name.name)
+        Factory.create_lecturer(Faker::Name.name)
     end
     students = [
         Factory.create_student("student a", 2017, "active", department, lecturers.sample),
         Factory.create_student("student b", 2017, "active", department, lecturers.sample),
+        Factory.create_student("mahasiswa abadi", 2017, "active", department, lecturers.sample),
+        Factory.create_student(Faker::Name.name, 2017, "active", department, lecturers.sample),
+        Factory.create_student(Faker::Name.name, 2017, "active", department, lecturers.sample),
         Factory.create_student(Faker::Name.name, 2017, "active", department, lecturers.sample),
     ]
 

@@ -3,7 +3,9 @@ ActiveAdmin.register CourseSemester, as: 'Lecturer Course' do
   permit_params :year, :semester, :course_id, :lecturer_id
 
   show do |course_semester|
+    resource
     attributes_table do
+      row(:course) { course_semester.course.name }
       row :year
       row :semester
     end

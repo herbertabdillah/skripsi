@@ -15,6 +15,16 @@ ActiveAdmin.register CourseResultScore do
   #   permitted << :other if params[:action] == 'create' && current_user.admin?
   #   permitted
   # end
+  form do |f|
+    f.inputs do
+      f.input :course_result, :input_html => { disabled: true }
+      f.input :course_plan_course_semester, :input_html => { disabled: true }
+      f.input :score
+    end
+    f.actions
+  end
+
+
   controller do
     def update
       update! do |format|

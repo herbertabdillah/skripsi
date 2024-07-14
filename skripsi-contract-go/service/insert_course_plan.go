@@ -93,7 +93,7 @@ func (s Service) creditValidation(cp *state.CoursePlan) error {
 		maxCredit = 18
 	}
 
-	if totalCredit >= maxCredit {
+	if totalCredit > maxCredit {
 		return errors.New("credit exceed " + strconv.Itoa(totalCredit) + " max: " + strconv.Itoa(maxCredit))
 	}
 

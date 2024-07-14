@@ -27,6 +27,7 @@ ActiveAdmin.register CoursePlan do
       row :semester
       row :student
       row :is_approved
+      row(:total_credit) { resource.get_total_credit }
     end
 
     panel 'Course Taken' do

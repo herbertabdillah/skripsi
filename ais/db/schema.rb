@@ -32,7 +32,7 @@ ActiveRecord::Schema.define(version: 2024_01_03_032905) do
 
   create_table "blockchain_syncs", force: :cascade do |t|
     t.string "syncable_type"
-    t.integer "syncable_id"
+    t.bigint "syncable_id"
     t.string "status"
     t.string "description"
     t.datetime "created_at", precision: 6, null: false

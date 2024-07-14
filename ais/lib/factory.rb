@@ -23,7 +23,7 @@ class Factory
     university_domain = "uinjkt.ac.id"
     email = name.gsub(/[^0-9a-z ]/i, '').downcase().split(" ").join(".") + "@mhs.#{university_domain}"
     nim = "11#{entry_year % 2000}0910000#{rand(100..999)}"
-    student = Student.create!(name: name, nim: nim, entry_year: entry_year, status: status, department: department, supervisor_lecturer: supervisor_lecturer)
+    student = Student.create!(id: nim, name: name, nim: nim, entry_year: entry_year, status: status, department: department, supervisor_lecturer: supervisor_lecturer)
     user = User.create!(email: email, password: 'password', password_confirmation: 'password', userable: student)
 
     student
@@ -65,6 +65,10 @@ class Factory
     master_course_per_semester = Factory.get_master_course_per_semester(department)
 
     # cpcs = []
+    if master_course_per_semester[semester].empty?
+      return
+    end
+
     course_semesters = master_course_per_semester[semester].map do |course|
         CourseSemester.create!(year: current_year, semester: current_semester, course: course, lecturer: lecturers.sample())
     end
@@ -106,11 +110,21 @@ class Factory
         cpcs = course_semesters.map do |course_semester|
             CoursePlanCourseSemester.create!(course_plan: course_plan, course_semester: course_semester)
         end
-        CoursePlanService.new(course_plan).submit
+        # CoursePlanService.new(course_plan).submit
     end
   end
 
   def self.fill_semester_and_sync(semester, start)
+    student = Student.all
+    if semester > 4
+      student = Student.where.not(name: "mahasiswa abadi").all
+    end
+    if semester == 8
+      student = Student.where.not(name: "mahasiswa abadi").each do |s|
+        graduate_service = GraduateService.new(s)
+        graduate_service.graduate
+      end
+    end
     Factory.fill_semester(Student.all, semester, start, Department.first, Lecturer.all)
     BlockchainSyncBatch.create(description: "#{CourseYear.active.year} #{CourseYear.active.semester}")
   end

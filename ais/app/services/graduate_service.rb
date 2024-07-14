@@ -9,7 +9,7 @@ class GraduateService
 
     score = @transcript_service.cumulative_score
 
-    graduate = Graduate.new(student: @student, score: score, year: 2023)
+    graduate = Graduate.new(student: @student, score: score, year: CourseYear.active.year)
     graduate.save
 
     @student.status = :graduated
