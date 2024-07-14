@@ -10,4 +10,5 @@ docker volume rm explorer_walletstore || true
 docker compose up -d
 
 cd ${ROOT_PATH}/ais
+docker compose build
 docker compose up -d
