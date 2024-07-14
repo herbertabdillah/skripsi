@@ -1,4 +1,35 @@
 class Factory
+  def self.master_data
+    Rails.logger.info("start")
+    start_year = 2017
+    current_year = start_year
+    current_semester = 1
+    university_domain = "uinjkt.ac.id"
+
+    Factory.create_admin
+
+    faculty = Faculty.create!(name: "Sains dan Teknologi")
+    department = Department.create!(name: "Teknik Informatika", faculty: faculty)
+
+    lecturers = (1..1).map do
+        Factory.create_lecturer("lecturer a")
+        Factory.create_lecturer("lecturer b")
+        Factory.create_lecturer(Faker::Name.name)
+        Factory.create_lecturer(Faker::Name.name)
+        Factory.create_lecturer(Faker::Name.name)
+    end
+    students = [
+        Factory.create_student("student a", 2017, "active", department, lecturers.sample),
+        Factory.create_student("student b", 2017, "active", department, lecturers.sample),
+        Factory.create_student("mahasiswa abadi", 2017, "active", department, lecturers.sample),
+        Factory.create_student(Faker::Name.name, 2017, "active", department, lecturers.sample),
+        Factory.create_student(Faker::Name.name, 2017, "active", department, lecturers.sample),
+        Factory.create_student(Faker::Name.name, 2017, "active", department, lecturers.sample),
+    ]
+
+    Rails.logger.info("master done")
+    Factory.insert_master_course_per_semester(department)
+  end
 
   def self.create_admin()
     university_domain = "uinjkt.ac.id"
