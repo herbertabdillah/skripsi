@@ -8,11 +8,13 @@ services:
     command: bash -c "bundle exec puma -C config/puma.rb"
     environment:
       WEB_CONCURRENCY: 8
-      RAILS_ENV: development
-      # RAILS_ENV: production
       DB_HOST: postgres
       REDIS_URL: redis://redis:6379
       PEER_HOST: host.docker.internal:7051
+      RAILS_ENV: ${RAILS_ENV}
+      APP_HOST: ${APP_HOST}
+      EXPLORER_HOST: ${EXPLORER_HOST}
+      PGADMIN_HOST: ${PGADMIN_HOST}
     ports:
       - "3000:3000"
     volumes:
@@ -30,10 +32,13 @@ services:
     command: bash -c "bundle exec sidekiq"
     environment:
       WEB_CONCURRENCY: 8
-      RAILS_ENV: production
       DB_HOST: postgres
       REDIS_URL: redis://redis:6379
       PEER_HOST: host.docker.internal:7051
+      RAILS_ENV: ${RAILS_ENV}
+      APP_HOST: ${APP_HOST}
+      EXPLORER_HOST: ${EXPLORER_HOST}
+      PGADMIN_HOST: ${PGADMIN_HOST}
     volumes:
       - .:/app
       - ../fabric-samples:/fabric-samples
