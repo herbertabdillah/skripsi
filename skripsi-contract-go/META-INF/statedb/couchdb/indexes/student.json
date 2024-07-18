@@ -1,0 +1,9 @@
+{
+    "index": {
+        "fields": ["department_id", "entry_year", "status", "supervisor_lecturer_id"]
+    },
+    "ddoc" : "indexStudentDoc",
+    "name" : "indexStudent",
+    "type" : "json"
+}
+

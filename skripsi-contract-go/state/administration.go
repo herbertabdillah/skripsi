@@ -13,6 +13,7 @@ type CourseYear struct {
 	Status   string `json:"status,omitempty"`
 }
 
+// WIP move to course
 type CourseSemester struct {
 	Id           string `json:"id,omitempty"`
 	Year         int    `json:"year,omitempty"`

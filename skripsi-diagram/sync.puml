@@ -19,7 +19,7 @@ group contoh sinkronisasi satu entitas
 
 sys -> sys: sinkronisasi fakultas
 activate sys
-sys -> db: mencari perubahan baru tabel ""faculties"" sejak tanggal terkahir ""blockchain_syncs""
+sys -> db: mencari perubahan baru tabel ""faculties""\nsejak tanggal terkahir ""blockchain_syncs""
 sys -> hlf: memanggil ""MasterData:insertFaculty(id, nama)""
 activate hlf
 hlf -> hld: menulis state ""Faculty""
@@ -48,7 +48,7 @@ activate sys
 sys -> db: membaca ""blockchain_syncs""
 sys -> db: membaca ""blockchain_sync_items""
 alt terdapat data yang tidak sesuai
-adm -> adm: melakukan verifikasi dan rekonsiliasi manual
+adm -> adm: melakukan verifikasi\ndan rekonsiliasi manual
 end
 
 deactivate sys

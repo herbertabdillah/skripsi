@@ -19,7 +19,7 @@ const { WorkloadModuleBase } = require('@hyperledger/caliper-core');
 /**
  * Workload module for the benchmark round.
  */
-class QueryCarWorkload extends WorkloadModuleBase {
+class QueryStudentWorkload extends WorkloadModuleBase {
     /**
      * Initializes the workload module instance.
      */
@@ -51,13 +51,13 @@ class QueryCarWorkload extends WorkloadModuleBase {
      */
     async submitTransaction() {
         this.txIndex++;
-        // let carNumber = 'Client' + this.workerIndex + '_CAR' + this.txIndex.toString();
+        const studentId = this.txIndex.toString()
 
         let args = {
             contractId: 'contract',
             contractVersion: 'v1',
             contractFunction: 'User:getStudent',
-            contractArguments: ["10"],
+            contractArguments: [studentId],
             timeout: 30,
             readOnly: true
         };
@@ -79,7 +79,7 @@ class QueryCarWorkload extends WorkloadModuleBase {
  * @return {WorkloadModuleInterface}
  */
 function createWorkloadModule() {
-    return new QueryCarWorkload();
+    return new QueryStudentWorkload();
 }
 
 module.exports.createWorkloadModule = createWorkloadModule;

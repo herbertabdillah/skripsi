@@ -24,7 +24,7 @@ const owners = ['Tomoko', 'Brad', 'Jin Soo', 'Max', 'Adrianna', 'Michel', 'Aarav
 /**
  * Workload module for the benchmark round.
  */
-class CreateCarWorkload extends WorkloadModuleBase {
+class InsertStudentWorkload extends WorkloadModuleBase {
     /**
      * Initializes the workload module instance.
      */
@@ -39,17 +39,19 @@ class CreateCarWorkload extends WorkloadModuleBase {
      */
     async submitTransaction() {
         this.txIndex++;
-        let carNumber = 'Client' + this.workerIndex + '_CAR' + this.txIndex.toString();
-        let carColor = colors[Math.floor(Math.random() * colors.length)];
-        let carMake = makes[Math.floor(Math.random() * makes.length)];
-        let carModel = models[Math.floor(Math.random() * models.length)];
-        let carOwner = owners[Math.floor(Math.random() * owners.length)];
+
+        const id = this.txIndex.toString()
+        const studentId = id
+        const departmentId = "1"
+        const entryYear = 2017
+        const status = "active"
+        const supervisorLecturerId = "1"
 
         let args = {
-            contractId: 'fabcar',
+            contractId: 'contract',
             contractVersion: 'v1',
-            contractFunction: 'createCar',
-            contractArguments: [carNumber, carMake, carModel, carColor, carOwner],
+            contractFunction: 'User:insertStudent',
+            contractArguments: [studentId, `Student ${studentId}`, studentId, departmentId, entryYear, status, supervisorLecturerId],
             timeout: 30
         };
 
@@ -62,7 +64,7 @@ class CreateCarWorkload extends WorkloadModuleBase {
  * @return {WorkloadModuleInterface}
  */
 function createWorkloadModule() {
-    return new CreateCarWorkload();
+    return new InsertStudentWorkload();
 }
 
 module.exports.createWorkloadModule = createWorkloadModule;
