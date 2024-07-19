@@ -29,7 +29,8 @@
           <%# <li><a href="/jenkins" class="nav-link" target="_blank">Reset Data</a></li> %>
           <li><a href="/reset" class="nav-link">Devops CI/CD</a></li>
           <li><a href="/explorer" class="nav-link">Transaksi Blockchain</a></li>
-          <li><a href="/pgadmin" target="_blank">Database</a></li>
+          <%# <li><a href="/pgadmin" target="_blank">Database</a></li> %>
+          <li><a href="/database">Database</a></li>
           <li><a href="<%= "#{Rails.application.config_for(:host)[:app_host]}/blockchain_data_check" %>">Cek Data Mahasiswa Blockchain</a></li>
           <a class="highlight" href="<%= "#{Rails.application.config_for(:host)[:app_host]}/admin" %>">Sistem Informasi Akademik</a>
         </ul>

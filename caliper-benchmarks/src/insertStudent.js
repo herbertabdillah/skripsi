@@ -31,7 +31,16 @@ class InsertStudentWorkload extends WorkloadModuleBase {
     constructor() {
         super();
         this.txIndex = 0;
+        this.workerIndex = Math.floor(Math.random() * Math.pow(10,5));
     }
+
+    async initializeWorkloadModule(workerIndex, totalWorkers, roundIndex, roundArguments, sutAdapter, sutContext) {
+        await super.initializeWorkloadModule(workerIndex, totalWorkers, roundIndex, roundArguments, sutAdapter, sutContext);
+
+        this.workerIndex = workerIndex;
+        this.random = this.roundArguments.prefix;
+    }
+
 
     /**
      * Assemble TXs for the round.
@@ -40,7 +49,7 @@ class InsertStudentWorkload extends WorkloadModuleBase {
     async submitTransaction() {
         this.txIndex++;
 
-        const id = this.txIndex.toString()
+        const id = `${this.random}.${this.workerIndex}.${this.txIndex}`
         const studentId = id
         const departmentId = "1"
         const entryYear = 2017

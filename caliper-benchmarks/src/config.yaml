@@ -2,23 +2,39 @@ test:
   workers:
     number: 5
   rounds:
-    - label: Create a car.
+    - label: Insert Student
       # 5000 transactions should create around 1000 cars per worker but not guaranteed
       # so need to set asset limits to less than 1000 for the other tests
-      txNumber: 5000
+      txNumber: 1000
       rateControl:
           type: fixed-load
           opts:
             transactionLoad: 5
       workload:
         module: src/insertStudent.js
-    # - label: Query a student.
-    #   txDuration: 30
-    #   rateControl:
-    #       type: fixed-load
-    #       opts:
-    #         transactionLoad: 5
-    #   workload:
-    #     module: src/queryStudent.js
-    #     arguments:
-    #       assets: 500
+        arguments:
+          prefix: 1337
+
+    - label: Insert Department
+      # 5000 transactions should create around 1000 cars per worker but not guaranteed
+      # so need to set asset limits to less than 1000 for the other tests
+      txNumber: 1000
+      rateControl:
+          type: fixed-load
+          opts:
+            transactionLoad: 5
+      workload:
+        module: src/insertDepartment.js
+        arguments:
+          prefix: 1337
+
+    - label: Query a student.
+      txDuration: 1000
+      rateControl:
+          type: fixed-load
+          opts:
+            transactionLoad: 5
+      workload:
+        module: src/queryStudent.js
+        arguments:
+          prefix: 1337

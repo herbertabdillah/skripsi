@@ -13,5 +13,6 @@ RUN bundle install
 COPY . /app
 RUN rails webpacker:install
 EXPOSE 3000
+RUN SECRET_KEY_BASE=1 RAILS_ENV=production bundle exec rake assets:clean
 RUN SECRET_KEY_BASE=1 RAILS_ENV=production bundle exec rake assets:precompile
 CMD ["bundle", "exec", "puma", "-C", "config/puma.rb"]
